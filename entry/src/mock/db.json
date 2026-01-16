@@ -1,0 +1,68 @@
+{
+  "devices": [
+    {
+      "id": 1,
+      "name": "1号粉尘传感器",
+      "value": 0.42,
+      "unit": "mg/m³",
+      "threshold": 0.8,
+      "status": 0,
+      "updateTime": "10:30:05",
+      "location": "A区巷道"
+    },
+    {
+      "id": 2,
+      "name": "2号瓦斯监测仪",
+      "value": 1.2,
+      "unit": "%",
+      "threshold": 1.0,
+      "status": 2,
+      "updateTime": "10:30:02",
+      "location": "B区挖掘面"
+    },
+    {
+      "id": 3,
+      "name": "3号液压支架",
+      "value": 32,
+      "unit": "Mpa",
+      "threshold": 30,
+      "status": 1,
+      "updateTime": "10:29:55",
+      "location": "C区传送带"
+    }
+  ],
+  "dusts": [
+    {
+      "id": 101,
+      "area": "掘进一区",
+      "pm25": 45,
+      "pm10": 82,
+      "status": 0
+    },
+    {
+      "id": 102,
+      "area": "回采二区",
+      "pm25": 112,
+      "pm10": 150,
+      "status": 1
+    }
+  ],
+  "workers": [
+    {
+      "id": 201,
+      "name": "张伟",
+      "role": "安全员",
+      "location": "A2作业面",
+      "heartRate": 78,
+      "status": 0
+    },
+    {
+      "id": 202,
+      "name": "王强",
+      "role": "爆破手",
+      "location": "B1深井",
+      "heartRate": 110,
+      "status": 2
+    }
+  ]
+}
