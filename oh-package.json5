@@ -2,9 +2,17 @@
   "modelVersion": "6.0.1",
   "description": "Please describe the basic information.",
   "dependencies": {
+    "@abner/refresh": "^1.4.8",
+    "@ohos/mpchart": "^3.0.26",
+    "@hadss/hmrouter": "^1.2.2",
+    "@abner/refresh_v2": "^1.0.4",
+    "@mcui/mccharts": "^2.8.9",
+    "@hadss/hmrouter-transitions": "^1.2.2",
+    "@ohos/axios": "^2.2.7"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.24",
     "@ohos/hamock": "1.0.0"
-  }
+  },
+  "dynamicDependencies": {}
 }

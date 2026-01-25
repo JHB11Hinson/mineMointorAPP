@@ -1,41 +1,50 @@
-// entry/src/main/ets/common/utils/HttpUtil.ets
 import { http } from '@kit.NetworkKit';
 
-// 定义泛型接口，约束后端返回的数据结构
 export class HttpUtil {
+  static readonly TIMEOUT = 5000;
 
-  /**
-   * 发起 GET 请求
-   * @param url 请求地址
-   * @returns Promise<T> 返回泛型 T
-   */
+  // GET 请求
   static async get<T>(url: string): Promise<T> {
-    const httpRequest = http.createHttp();
+    return HttpUtil.request<T>(url, http.RequestMethod.GET);
+  }
+  // POST 请求
+  static async post<T>(url: string, data: Record<string, string | number | boolean>): Promise<T> {
+    return HttpUtil.request<T>(url, http.RequestMethod.POST, data);
+  }
 
+  // PUT 请求
+  static async put<T>(url: string, data: Record<string, string | number | boolean>): Promise<T> {
+    return HttpUtil.request<T>(url, http.RequestMethod.PUT, data);
+  }
+
+  // 通用请求实现
+  private static async request<T>(url: string, method: http.RequestMethod, extraData?: Record<string, string | number | boolean>): Promise<T> {
+    const httpRequest = http.createHttp();
     try {
-      // 发起请求
       const response = await httpRequest.request(url, {
-        method: http.RequestMethod.GET,
-        expectDataType: http.HttpDataType.STRING, // 接收字符串后续手动转 JSON
-        connectTimeout: 5000,
-        readTimeout: 5000
+        method: method,
+        extraData: extraData, // 发送的数据
+        expectDataType: http.HttpDataType.STRING,
+        connectTimeout: HttpUtil.TIMEOUT,
+        readTimeout: HttpUtil.TIMEOUT,
+        header: {
+          'Content-Type': 'application/json'
+        }
       });
 
-      // 检查状态码
-      if (response.responseCode === 200) {
-        // 解析结果
+      if (response.responseCode >= 200 && response.responseCode < 300) {
         const result = response.result as string;
-        // 这里使用泛型断言，将解析后的 JSON 视为 T 类型
+        // 如果返回为空，直接返回 null 或 undefined
+        if (!result) {
+          return null as T;
+        }
         return JSON.parse(result) as T;
       } else {
-        console.error('Http request failed:', response.responseCode);
         return Promise.reject(`HTTP Error: ${response.responseCode}`);
       }
     } catch (err) {
-      console.error('Http request error:', JSON.stringify(err));
       return Promise.reject(err);
     } finally {
-      // 销毁请求对象，释放资源
       httpRequest.destroy();
     }
   }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>设备定位</title>
+    <style>
+        html, body, #container { width: 100%; height: 100%; margin: 0; padding: 0; }
+        .info-window {
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px 0 rgba(0,0,0,0.3);
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'cf41a135a6e8a269e24d6afa30a10cf5',
+        }
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=	cd17213978d7812cf4536247a15d4cc4"></script>
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+    let map = null;
+    let marker = null;
+
+    // 初始化地图
+    function initMap() {
+        // 默认显示重庆大学
+        const defaultCenter = [106.464673, 29.569537];
+
+        map = new AMap.Map('container', {
+            resizeEnable: true,
+            zoom: 17,
+            center: defaultCenter
+        });
+    }
+
+    // 供 ArkTS 调用的方法：设置设备位置
+    // 参数：lng(经度), lat(纬度), deviceName(设备名), status(状态)
+    function setDeviceLocation(lng, lat, deviceName, status) {
+        if (!map) return;
+
+        const position = [parseFloat(lng), parseFloat(lat)];
+
+        // 移动地图中心
+        map.setZoomAndCenter(18, position);
+
+        // 清除旧标记
+        if (marker) map.remove(marker);
+
+        // 3. 根据状态决定标记颜色 (0:正常-蓝, 1:警告-黄, 2:危险-红)
+        let iconColor = 'blue';
+        if(status === 1) iconColor = 'yellow';
+        if(status === 2) iconColor = 'red';
+
+        // 简单的标记样式
+        const content = `<div style="background:${iconColor}; width:20px; height:20px; border-radius:50%; border:2px solid white; box-shadow:0 0 5px #333;"></div>`;
+
+        // 添加新标记
+        marker = new AMap.Marker({
+            position: position,
+            content: content,
+            offset: new AMap.Pixel(-10, -10),
+            title: deviceName
+        });
+        map.add(marker);
+
+        // 添加信息窗体
+        const infoWindow = new AMap.InfoWindow({
+            content: `<div class="info-window"><strong>${deviceName}</strong><br>状态码: ${status}</div>`,
+            offset: new AMap.Pixel(0, -15)
+        });
+        infoWindow.open(map, position);
+    }
+
+    window.onload = initMap;
+</script>
+</body>
+</html>

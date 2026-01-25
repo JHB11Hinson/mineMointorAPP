@@ -1,6 +1,7 @@
 import { DustItem, DustService } from '../model/DustModel';
 import { DustMonitorCard } from '../view/dust/DustMonitorCard';
 import { promptAction } from '@kit.ArkUI'; // 用于弹窗提示错误
+import { HMRouterMgr } from '@hadss/hmrouter';
 
 @Entry
 @Component
@@ -159,6 +160,12 @@ export struct DustMonitoringPage {
           ForEach(this.dustList, (item: DustItem) => {
             ListItem() {
               DustMonitorCard({ dust: item })
+                .onClick(() => {
+                  HMRouterMgr.push({
+                    pageUrl: 'DustDetailPage',
+                    param: item // 传递整个对象
+                  })
+                })
             }
           }, (item: DustItem) => item.id.toString())
         }

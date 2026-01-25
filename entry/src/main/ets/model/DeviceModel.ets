@@ -1,14 +1,12 @@
 import { CommonConstants } from '../common/constants/CommonConstants';
-import { HttpUtil } from '../common/utils/HttpUtil';
+import { Request } from '../common/utils/Request';
 
-// 设备状态枚举
 export enum DeviceStatus {
   NORMAL = 0,
   WARNING = 1,
   DANGER = 2
 }
 
-// 设备数据接口
 export interface DeviceItem {
   id: number;
   name: string;
@@ -18,14 +16,36 @@ export interface DeviceItem {
   status: DeviceStatus;
   updateTime: string;
   location: string;
+  isReported?: boolean;
 }
 
-// 3. 获取设备列表的服务函数
 export class DeviceService {
-  // 使用泛型 Promise<DeviceItem[]> 约束返回值
+  /**
+   * 根据当前值和阈值，计算设备状态
+   */
+  static determineStatus(value: number, threshold: number): DeviceStatus {
+    if (value >= threshold) {
+      return DeviceStatus.DANGER;
+    } else if (value >= threshold * 0.8) {
+      return DeviceStatus.WARNING;
+    }
+    return DeviceStatus.NORMAL;
+  }
+
+  // 获取设备列表
   static async getDeviceList(): Promise<DeviceItem[]> {
-    // 调用封装好的 HttpUtil，传入泛型参数 DeviceItem[]
-    // 这样 TS 就能自动推断出返回的是设备数组
-    return await HttpUtil.get<DeviceItem[]>(CommonConstants.DEVICE_URL);
+    const list = await Request.get<DeviceItem[]>(CommonConstants.DEVICE_URL);
+    return list.map((item: DeviceItem) => {
+      item.status = DeviceService.determineStatus(item.value, item.threshold);
+      return item;
+    });
+  }
+
+  // 更新设备
+  static async updateDevice(device: DeviceItem): Promise<DeviceItem> {
+    device.status = DeviceService.determineStatus(device.value, device.threshold);
+
+    // 调用 PUT 接口更新数据
+    return await Request.put<DeviceItem>(`${CommonConstants.DEVICE_URL}/${device.id}`, device);
   }
 }
