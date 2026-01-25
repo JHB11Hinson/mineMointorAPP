@@ -1,5 +1,5 @@
 // entry/src/main/ets/common/utils/HttpUtil.ets
-import http from '@ohos.net.http';
+import { http } from '@kit.NetworkKit';
 
 // 定义泛型接口，约束后端返回的数据结构
 export class HttpUtil {
