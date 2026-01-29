@@ -20,11 +20,11 @@ export struct WorkerMonitoringPage {
   async fetchData() {
     this.isLoading = true;
     try {
-      // 1. 发起网络请求
+      // 发起网络请求
       const data = await WorkerService.getWorkerList();
       this.workerList = data;
 
-      // 2. 简单的本地计算：统计总人数和危险人数
+      // 本地计算：统计总人数和危险人数
       this.totalWorkers = this.workerList.length;
       this.dangerCount = this.workerList.filter(w => w.status === 2).length;
 
@@ -38,7 +38,7 @@ export struct WorkerMonitoringPage {
 
   build() {
     Column() {
-      // 1. 顶部标题栏 (带简单的统计信息)
+      // 顶部标题栏 (带简单的统计信息)
       Column() {
         Text('人员安全监控')
           .fontSize(20)
@@ -80,7 +80,7 @@ export struct WorkerMonitoringPage {
       // 分割线
       Divider().strokeWidth(1).color('#E3E3E3')
 
-      // 2. 列表内容区域
+      // 列表内容区域
       if (this.isLoading) {
         Column() {
           LoadingProgress().width(40).height(40)

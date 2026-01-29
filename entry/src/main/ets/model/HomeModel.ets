@@ -125,7 +125,7 @@ export class HomeService {
   // 处理异常逻辑
   static async handleWarning(item: WarningItem, note: string): Promise<boolean> {
     try {
-      // 1. 上报历史记录
+      // 上报历史记录
       const newRecord: RecordItem = {
         id: new Date().getTime(),
         handler: "我 (安全员)",
@@ -137,9 +137,9 @@ export class HomeService {
       // 显式传入泛型 <RecordItem>
       await Request.post<RecordItem>('/records', newRecord);
 
-      // 2. 更新源数据状态
+      // 更新源数据状态
       let url = '';
-      // 修改：使用绝对路径，避免相对路径拼接导致的问题
+      // 使用绝对路径
       if (item.category === 'device') {
         url = `${CommonConstants.BASE_URL}/devices/${item.originalId}`;
       } else if (item.category === 'worker') {

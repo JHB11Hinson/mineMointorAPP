@@ -1,4 +1,3 @@
-// src/main/ets/common/utils/UserAuthUtil.ets
 import { userAuth } from '@kit.UserAuthenticationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 

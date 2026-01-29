@@ -2,7 +2,7 @@ import { WarningItem, RecordItem, HomeService } from '../model/HomeModel';
 import { ListView, RefreshController } from '@abner/refresh';
 import { promptAction } from '@kit.ArkUI';
 
-// --- 自定义弹窗组件 ---
+// 自定义弹窗组件
 @CustomDialog
 struct HandleDialog {
   controller: CustomDialogController;
@@ -54,7 +54,7 @@ struct HandleDialog {
   }
 }
 
-// --- 主页面 ---
+// 主页面
 @Component
 export struct HomePage {
   @State warningList: WarningItem[] = [];
@@ -124,7 +124,7 @@ export struct HomePage {
             .padding({ left: 4, right: 4 })
             .margin({ left: 6 })
 
-          // 状态标签 (新增)
+          // 状态标签
           if (item.isReported) {
             Text('已上报')
               .fontSize(10)
@@ -160,7 +160,7 @@ export struct HomePage {
       .alignItems(HorizontalAlign.Start)
       .padding({ left: 8 })
 
-      // 3. 右侧按钮
+      // 右侧按钮
       Column() {
         Button(item.isReported ? '更新' : '处理')
           .height(32)

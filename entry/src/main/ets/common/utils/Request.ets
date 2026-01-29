@@ -24,7 +24,7 @@ export class Request {
    * @param params 请求参数
    * 泛型说明：
    * T: 响应数据类型
-   * 第二个泛型 T: 响应体(R)就是 T (因为拦截器已经脱壳了)
+   * 第二个泛型 T: 响应体(R)就是 T
    */
   static async get<T>(url: string, params?: Object): Promise<T> {
     // 显式传入三个泛型：<T, R, D>，其中 R=T, D=null
@@ -37,7 +37,7 @@ export class Request {
    * @param data 请求体数据
    */
   static async post<T>(url: string, data?: Object): Promise<T> {
-    // 显式传入三个泛型：<T, R, D>，其中 R=T, D=Object
+    // 显式传入三个泛型：<T, R, D>
     return instance.post<T, T, Object>(url, data);
   }
 
@@ -47,7 +47,7 @@ export class Request {
    * @param data 请求体数据
    */
   static async put<T>(url: string, data?: Object): Promise<T> {
-    // 显式传入三个泛型：<T, R, D>，其中 R=T, D=Object
+    // 显式传入三个泛型：<T, R, D>
     return instance.put<T, T, Object>(url, data);
   }
 
